@@ -1,6 +1,6 @@
 package informatik.haw_hamburg.de.IN2Prak;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -13,7 +13,7 @@ public interface CustomerDAO {
 	 * Füge diesen Customer in die Datenbanktabelle CUSTOMER ein.
 	 * 
 	 * @param customer
-	 *            Der einzuf�gende Customer.
+	 *            Der einzufügende Customer.
 	 */
 	void insertCustomer(Customer customer);
 	
@@ -29,7 +29,7 @@ public interface CustomerDAO {
 	 * Lösche alle Customers aus der Datenbanktabelle CUSTOMER.
 	 * 
 	 */
-	void deleteCustomers();
+	void deleteCustomer(long id);
 
 	/**
 	 * Ändere diesen Customer auf der Datenbanktabelle CUSTOMER. 
@@ -37,6 +37,6 @@ public interface CustomerDAO {
 	 * @param id das zu ändernde ID
 	 * @return true, wenn der Customer geändert wurde; false, wenn nicht
 	 */
-	void updateCustomer(long id, String firstName, String familyName, Date entryDate);
+	void updateCustomer(long id, String firstName, String familyName, LocalDate entryDate);
 
 }

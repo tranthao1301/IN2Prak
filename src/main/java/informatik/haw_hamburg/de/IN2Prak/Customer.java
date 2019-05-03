@@ -1,14 +1,14 @@
 package informatik.haw_hamburg.de.IN2Prak;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 public class Customer {
 	long _customerID;
 	String _firstName;
 	String _familyName;
-	Date _entryDate;
+	LocalDate _entryDate;
 
-	public Customer(long id, String first, String last, Date entryDate) {
+	public Customer(long id, String first, String last, LocalDate entryDate) {
 		_customerID = id;
 		_firstName = first;
 		_familyName = last;
@@ -27,7 +27,7 @@ public class Customer {
 		return _familyName;
 	}
 	
-	public Date getEntryDate() {
+	public LocalDate getEntryDate() {
 		return _entryDate;
 	}
  

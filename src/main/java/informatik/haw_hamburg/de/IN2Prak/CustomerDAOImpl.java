@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 public class CustomerDAOImpl implements CustomerDAO {
@@ -31,7 +32,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 			stm.setLong(1, customer.getID());
 			stm.setString(2, customer.getFirstName());
 			stm.setString(3, customer.getFamilyName());
-			stm.setDate(4, customer.getEntryDate());
+			stm.setDate(4, Date.valueOf(customer.getEntryDate()));
 			stm.executeUpdate();
 			stm.close();
 		} catch (SQLException e) {
@@ -44,12 +45,12 @@ public class CustomerDAOImpl implements CustomerDAO {
 	public void insertCustomerList(List<Customer> list) {
 		String command = "INSERT INTO ABO816.CUSTOMER (CUSTOMERID,FIRSTNAME,FAMILYNAME,ENTRYDATE)" +  "VALUES (?,?,?,?)";
 		try(PreparedStatement stm = con.prepareStatement(command);){
-			
+
 			for(Customer c : list) {
 				stm.setLong(1, c.getID());
 				stm.setString(2, c.getFirstName());
 				stm.setString(3, c.getFamilyName());
-				stm.setDate(4, c.getEntryDate());
+				stm.setDate(4, Date.valueOf(c.getEntryDate()));
 				
 				stm.addBatch();
 				count++;
@@ -64,31 +65,26 @@ public class CustomerDAOImpl implements CustomerDAO {
 		System.out.println("All Customers have been succesfully added to the table!");
 	}
 
-	public void deleteCustomers() {
-		Statement stm = null;
+	public void deleteCustomer(long id) {
+		String command = "DELETE FROM ABO816.CUSTOMER WHERE CUSTOMERID = ?";
 		try{
-			stm = con.createStatement();
-			stm.execute("DELETE FROM ABO816.CUSTOMER WHERE CUSTOMERID >= 1");
+			PreparedStatement stm = con.prepareStatement(command);
+			stm.setLong(1, id);
+			stm.executeUpdate();
+			stm.close();
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
-			try {
-				stm.close();
-				con.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		System.out.println("All Customers have been succesfully removed from the table!");
+		} 
+		System.out.println("Customer has been succesfully removed from the table!");
 	}
 
-	public void updateCustomer(long id, String firstName, String familyName, Date entryDate) {
+	public void updateCustomer(long id, String firstName, String familyName, LocalDate entryDate) {
 		String query = "UPDATE ABO816.CUSTOMER SET firstname = ?, familyname = ?, entrydate = ? WHERE customerid = ? ";
 		try {
 			PreparedStatement stm = con.prepareStatement(query);
 			stm.setString(1, firstName); 
 			stm.setString(2, familyName);
-			stm.setDate(3, entryDate);
+			stm.setDate(3, Date.valueOf(entryDate));
 			stm.setLong(4, id);
 			stm.executeUpdate();
 			System.out.println("Database updated succesfully");

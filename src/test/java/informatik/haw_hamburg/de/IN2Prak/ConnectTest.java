@@ -1,6 +1,6 @@
 package informatik.haw_hamburg.de.IN2Prak;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -41,7 +41,7 @@ public class ConnectTest {
 	void addCustomersTest() {
 		deleteTable();
 		createTable();
-		Date date = new Date(System.currentTimeMillis());
+		LocalDate date = LocalDate.now();
 		
 		List<Customer> list = new ArrayList<>();
 		list.add(new Customer(1,"Paul","Kowalski",date));
@@ -60,8 +60,12 @@ public class ConnectTest {
 		
 		assertEquals(customerDAO.showCustomerByID(1), "Paul Kowalski");
 		customerDAO.showCustomer();
+		System.out.println();
 		customerDAO.updateCustomer(1, "Selena", "Gomez", date);
 		assertEquals(customerDAO.showCustomerByID(1), "Selena Gomez");
+		customerDAO.showCustomer();
+		System.out.println();
+		customerDAO.deleteCustomer(1);
 		customerDAO.showCustomer();
 		try {
 			if(customerDAO.con != null) {
