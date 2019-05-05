@@ -7,42 +7,45 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
-@Entity(name = "BANK")
-public class Bank {
 
+@Entity(name="BANK")
+public class Bank {
+	
 	@Id
 	@Column(nullable = false)
-	private Long bankId;
-
+	private long bankId;
+	
 	@Basic
-	@Column(name = "NAME", nullable = false)
+	@Column(name="NAME", nullable = false)
 	private String bankName;
-
-	@ManyToMany(mappedBy = "banks")
-	// visitors of the bank
+	
+	@ManyToMany(mappedBy="banks")
+	//visitors of the bank	
 	private List<Customer> customerList;
-
+	
 	public Bank(long id, String bankName) {
-		this.bankId = id;
+		this.bankId =id;
 		this.bankName = bankName;
 		customerList = new ArrayList<Customer>();
 	}
-
-	public Bank() {
-
+	
+	public Bank(){
+		
 	}
 
-	public void addCustomer(Customer customer) {
+	public void addCustomer(Customer customer){
 		customerList.add(customer);
 	}
 
-	public Long getBankId() {
+	public long getBankId() {
 		return bankId;
 	}
 
-	public void setBankId(Long bankId) {
+	public void setBankId(long bankId) {
 		this.bankId = bankId;
 	}
 
@@ -66,5 +69,7 @@ public class Bank {
 	public String toString() {
 		return "Bank [bankId=" + bankId + ", bankName=" + bankName + ", customerList=" + customerList + "]";
 	}
+
+
 
 }

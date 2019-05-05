@@ -19,18 +19,18 @@ class OptimisticLockingTest {
 
 	private static EntityManagerFactory emf;
 	private static EntityManager em;
-	private static Long[] ids;
+	private static long[] ids;
 	private static String[] firstNames;
 	private static String[] lastNames;
 	private static List<Customer> customers;
 	
    @BeforeAll	
 	public static void getConnection() {
-	emf = Persistence.createEntityManagerFactory("persistenceUnit");
+	emf = Persistence.createEntityManagerFactory("persistenceUnit2");
 	em = emf.createEntityManager();
 		assertTrue(em != null);
 		customers = new ArrayList<Customer>();
-		ids = new Long[] { 1L, 2L, 3L, 4L, 5L, 6L, 7L, 8L, 9L, 10L };
+		ids = new long[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 		firstNames = new String[] { "Jane", "Ana", "Christian", "Tara", "Paul", "Jana", "Robert", "Mila", "Lana",
 				"Jovan" };
 		for(int i = 0; i<10;i++) {
@@ -71,15 +71,24 @@ class OptimisticLockingTest {
 	 //Transparent Update
 	 em.getTransaction().begin();
 	 Customer jane = em.find(Customer.class, 1L);
+	 Customer ana = em.find(Customer.class, 2L);
 	 System.out.println(jane);
+	 System.out.println(ana);
 	 assertTrue(jane != null);
+	 assertTrue(ana!=null);
 	 em.detach(jane);
+	 em.detach(ana);
 	 jane.setFirstName("Harrald");
+	 ana.setLastName("Bradley");
 	  em.merge(jane);
+	  em.merge(ana);
 	  em.getTransaction().commit();
-	  jane =em.find(Customer.class, 1L );
+	  jane =em.find(Customer.class, 1L);
 		 System.out.println(jane);
+	  ana = em.find(Customer.class, 2L);
+	  System.out.println(ana);
 	  assertTrue(jane.getFirstName().equals("Harrald"));
+	  assertTrue(ana.getLastName().equals("Bradley"));
 	  System.out.println("########################################################");
 		System.out.println(" CHANGE END");
 	 }

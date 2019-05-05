@@ -3,22 +3,20 @@ package informatik.haw_hamburg.de.Relation;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+
+import javax.persistence.*;
 
 @Entity(name="ADDRESS")
 public class Address {
 
 	@Id 
-    @Column(nullable = false)
-	private Long addressId;
+    @Column(name="ADDRESSID", nullable = false)
+	private long addressId;
 
 	@Basic
 	private String street;
 	@Basic
+	@Column(name="NUMMER")
 	private int nummer;
 	@Basic
 	private int zip;
@@ -26,10 +24,7 @@ public class Address {
 	@OneToMany(mappedBy="address")	
 	private List<Customer> customers;
 	
-	public Address() {
-		
-	}
-	public Address(Long adressId, String street, int nummer, int zip) {
+	public Address(long adressId, String street, int nummer, int zip) {
 		this.addressId = adressId;
 		this.street = street;
 		this.nummer = nummer;
@@ -37,12 +32,15 @@ public class Address {
 		customers = new ArrayList<Customer>();
 	}	
 
+	public Address() {
+		
+	}
 
-	public Long getAddressId() {
+	public long getAddressId() {
 		return addressId;
 	}
 
-	public void setAddressId(Long addressId) {
+	public void setAddressId(long addressId) {
 		this.addressId = addressId;
 	}
 
@@ -84,4 +82,6 @@ public void addCustomer(Customer c) {
 		return "Address [addressId=" + addressId + ", street=" + street + ", nummer=" + nummer + ", plz=" + zip
 				+ "]";
 	}
+	
+
 }

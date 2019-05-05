@@ -15,12 +15,16 @@ import javax.persistence.Version;
 public class Customer {
 
 	@Id
+	@Column(name="CUSTOMERID")
 	private long id;
-	
+	@Basic
+	@Column(name="FIRSTNAME", length=50)
 	private String firstName;
-	
+	@Basic
+	@Column(name="FAMILYNAME", length=50)
 	private String lastName;
-	
+	@Basic
+	@Column(name="ENTRYDATE")
 	private Date entryDate;
 	
 	@Version
@@ -38,7 +42,6 @@ public class Customer {
 	
 	}
 	
-	@Column(name="CUSTOMERID")
 	public long getId() {
 		return id;
 	}
@@ -47,8 +50,6 @@ public class Customer {
 		this.id = id;
 	}
 	
-	@Basic
-	@Column(name="FIRSTNAME", length=50)
 	public String getFirstName() {
 		return firstName;
 	}
@@ -57,8 +58,6 @@ public class Customer {
 		this.firstName = firstName;
 	}
 
-	@Basic
-	@Column(name="FAMILYNAME", length=50)
 	public String getLastName() {
 		return lastName;
 	}
@@ -67,8 +66,6 @@ public class Customer {
 		this.lastName = lastName;
 	}
 
-	@Basic
-	@Column(name="ENTRYDATE")
 	public Date getEntryDate() {
 		return entryDate;
 	}

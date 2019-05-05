@@ -22,18 +22,18 @@ class CustomerAnnotationTest {
 
 	private static EntityManagerFactory emf;
 	private static EntityManager em;
-	private static Long[] ids;
+	private static long[] ids;
 	private static String[] firstNames;
 	private static String[] lastNames;
 	private static List<Customer> customers;
 	
    @BeforeAll	
 	public static void getConnection() {
-	emf = Persistence.createEntityManagerFactory("persistenceUnit");
+	emf = Persistence.createEntityManagerFactory("persistenceUnit2");
 	em = emf.createEntityManager();
 		assertTrue(em != null);
 		customers = new ArrayList<Customer>();
-		ids = new Long[] { 1L, 2L, 3L, 4L, 5L, 6L, 7L, 8L, 9L, 10L };
+		ids = new long[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 		firstNames = new String[] { "Jane", "Ana", "Christian", "Tara", "Paul", "Jana", "Robert", "Mila", "Lana",
 				"Jovan" };
 		for(int i = 0; i<10;i++) {
@@ -51,7 +51,7 @@ class CustomerAnnotationTest {
 		}
 		em.getTransaction().begin();
 	    System.out.println("I DELETE ");
-		Query delete = em.createNativeQuery("DELETE FROM CUSTOMER1");
+		Query delete = em.createNativeQuery("DELETE FROM CUSTOMER2");
 		delete.executeUpdate();
 		em.getTransaction().commit();
 		em.getTransaction().begin();
@@ -75,7 +75,7 @@ class CustomerAnnotationTest {
 	 assertTrue(em != null);
 	 assertTrue(customers != null);
 	 em.getTransaction().begin();
-	 TypedQuery<Customer> select = em.createQuery(" FROM CUSTOMER1", Customer.class);	
+	 TypedQuery<Customer> select = em.createQuery(" FROM CUSTOMER2", Customer.class);	
 	 List<Customer> result = select.getResultList();	 
 	 for(Customer c: result) {
 		 System.out.println((c));
@@ -118,7 +118,7 @@ class CustomerAnnotationTest {
 		System.out.println("DOING DELETETEST");
 		em.getTransaction().begin();
 		
-		TypedQuery<Customer> select = em.createQuery(" FROM CUSTOMER1", Customer.class);
+		TypedQuery<Customer> select = em.createQuery(" FROM CUSTOMER2", Customer.class);
 
 		 List<Customer> result = select.getResultList();	
 		 
@@ -130,14 +130,14 @@ class CustomerAnnotationTest {
 			 assertTrue(result.contains(c));
 			 }
 		
-	    Query res = em.createQuery("DELETE FROM CUSTOMER1 WHERE FIRSTNAME='Paul'");
+	    Query res = em.createQuery("DELETE FROM CUSTOMER2 WHERE FIRSTNAME='Paul'");
 		res.executeUpdate();
 		
 		 List<Customer> rs = select.getResultList();	
 	     assertFalse(rs.isEmpty());
 	
 	//cardinality of Customers in DB
-		Query number = em.createNativeQuery("SELECT Count(CUSTOMERID) FROM CUSTOMER1");
+		Query number = em.createNativeQuery("SELECT Count(CUSTOMERID) FROM CUSTOMER2");
 		
 		BigDecimal size = (BigDecimal) number.getSingleResult();
 		

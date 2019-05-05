@@ -1,11 +1,14 @@
 package informatik.haw_hamburg.de.Relation;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -13,45 +16,76 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
-@NamedQuery(
-			name="findCustomersByName",
-			query="FROM CUSTOMERR c WHERE c.firstName LIKE:custName")
+
+
+//@NamedQuery(
+//		name="findCustomersByName",
+//		query="FROM CUSTOMERR c WHERE c.firstName LIKE :custName"
+//		) 
 @Entity(name="CUSTOMERR")
+@Table(name="CUSTOMERR")
 public class Customer {
 	
+	@Id
+	@Column(name="CUSTOMID")
+	private Long customerId;
+	@Basic
+	@Column(name="FIRSTNAME", length=50)
+	private String firstName;
+	@Basic
+	@Column(name="FAMILYNAME", length = 50)
+	private String lastName;
+	@Basic
+	@Column(name="ENTRYDATE")
+	private Date entryDate;
+
+	// address-ID
+	@ManyToOne
+	@JoinColumn(name="ADDRESSID", nullable=false)
+	private Address address;
+
+	
+	// banks the customer visits
+	@ManyToMany
+	@JoinTable(name="VISITS",
+	joinColumns=@JoinColumn(name="CUSTOMID",
+	referencedColumnName="CUSTOMID"),
+	inverseJoinColumns=@JoinColumn(name="BANKID",
+	referencedColumnName="BANKID")
+	)
+	private List<Bank> banks;
+	
+	@OneToMany(cascade=CascadeType.ALL, mappedBy="customer")
+	private List<CreditCard> cards;
+	
+	public Customer (Long customerId, String firstName, String lastName, Date entryDate, Address address) {
+		this.customerId = customerId;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.entryDate = entryDate;
+		this.address = address;
+		this.banks = new ArrayList<Bank>();
+		this.cards = new ArrayList<CreditCard>();
+	}//constructor()
+	
+	public Customer (Long customerId, String firstName, String lastName, Date entryDate ) {
+		this(customerId, firstName, lastName, entryDate, null);
+	}//constructor()
+
 	public Customer() {
 		
 	}
 	
-	@Id
-	private long id;
-	private String firstName;
-	private String lastName;
-	private Date entryDate;
-	
-	private Address address;
-	private List<Bank> banks;
-	private List<CreditCard> cards;
-	
-	public Customer (long id, String firstName, String lastName, Date entryDate ) {
-		this.id = id;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.entryDate = entryDate;
-	}//constructor()
-
-	
-	@Column(name="CUSTOMERID")
-	public long getId() {
-		return id;
+	public Long getcustomerId() {
+		return customerId;
 	}
 
-	public void setId(long id) {
-		this.id = id;
+	public void setcustomerId(Long customerId) {
+		this.customerId = customerId;
 	}
-	
-	@Column(name="FIRSTNAME", length=50)
+
 	public String getFirstName() {
 		return firstName;
 	}
@@ -60,7 +94,6 @@ public class Customer {
 		this.firstName = firstName;
 	}
 
-	@Column(name="FAMILYNAME", length=50)
 	public String getLastName() {
 		return lastName;
 	}
@@ -69,7 +102,6 @@ public class Customer {
 		this.lastName = lastName;
 	}
 
-	@Column(name="ENTRYDATE")
 	public Date getEntryDate() {
 		return entryDate;
 	}
@@ -78,41 +110,36 @@ public class Customer {
 		this.entryDate = entryDate;
 	}
 	
-	@ManyToOne
-	@JoinColumn(name="ADDRESSID", nullable=false)
+	
 	public Address getAddress() {
 		return address;
 	}
-	
+
 	public void setAddress(Address address) {
 		this.address = address;
 	}
-	
-	@ManyToMany
-	@JoinTable(name="VISITS", joinColumns=@JoinColumn(name="CUSTOMERID", referencedColumnName="CUSTOMERID"),
-				inverseJoinColumns=@JoinColumn(name="BANKID", referencedColumnName="BANKID"))
-	public List<Bank> getBanks(){
+
+	public List<Bank> getBanks() {
 		return banks;
 	}
-	
+
 	public void addBank(Bank bank) {
 		this.banks.add(bank);
 	}
-	
-	@OneToMany(cascade=CascadeType.ALL, mappedBy="customer")
+
 	public List<CreditCard> getCards(){
 		return cards;
 	}
 	
-	public void addCard(CreditCard card) {
-		this.cards.add(card);
+	public void addCards(CreditCard c) {
+		cards.add(c);
 	}
-	
+
+
 	@Override
 	public String toString() {
-		return "Customer [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", entryDate=" + entryDate
-				+ "]";
+		return "Customer [customerId=" + customerId + ", firstName=" + firstName + ", lastName=" + lastName
+				+ ", entryDate=" + entryDate + ", address=" + address + "]";
 	}
-
-
+	
 }

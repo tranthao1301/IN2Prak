@@ -10,14 +10,19 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-@Entity
-@Table(name="CUSTOMER1")
+@Entity(name="CUSTOMER2")
+@Table(name="CUSTOMER2")
 
 public class Customer {
+	
 	@Id
+	@Column(name="CUSTOMERID")
 	private long id;
+	@Column(name="FIRSTNAME", length=50)
 	private String firstName;
+	@Column(name="FAMILYNAME", length=50)
 	private String lastName;
+	@Column(name="ENTRYDATE")
 	private Date entryDate;
 	
 	
@@ -32,9 +37,6 @@ public class Customer {
 	
 	}
 	
-	@GeneratedValue(strategy = GenerationType.SEQUENCE,
-	generator = "CUSTOMERGEN")
-	@Column(name="CUSTOMERID")
 	public long getId() {
 		return id;
 	}
@@ -43,7 +45,6 @@ public class Customer {
 		this.id = id;
 	}
 	
-	@Column(name="FIRSTNAME", length=50)
 	public String getFirstName() {
 		return firstName;
 	}
@@ -52,7 +53,6 @@ public class Customer {
 		this.firstName = firstName;
 	}
 
-	@Column(name="FAMILYNAME", length=50)
 	public String getLastName() {
 		return lastName;
 	}
@@ -61,7 +61,6 @@ public class Customer {
 		this.lastName = lastName;
 	}
 
-	@Column(name="ENTRYDATE")
 	public Date getEntryDate() {
 		return entryDate;
 	}
