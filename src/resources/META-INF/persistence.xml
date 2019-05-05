@@ -16,7 +16,7 @@
 			<property name="hibernate.connection.username"
 				value="abo816" />
 			<property name="hibernate.connection.password"
-				value="Iloveyou1301" />
+				value="********" />
 			<property name="hibernate.dialect"
 				value="org.hibernate.dialect.Oracle10gDialect" />
 			<property name="hibernate.default_schema" value="" />

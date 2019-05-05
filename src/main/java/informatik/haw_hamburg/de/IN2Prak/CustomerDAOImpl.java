@@ -11,19 +11,10 @@ import java.util.List;
 
 public class CustomerDAOImpl implements CustomerDAO {
 	private Connect c = new Connect();
-	public int count = 0;
 	public Connection con = c.connect();
 
 	
 	public void insertCustomer(Customer customer){
-//		long customerID = customer.getID();
-//		String firstName = customer.getFirstName();
-//		String familyName = customer.getFamilyName();
-//		Date entryDate = customer.getEntryDate();
-//		String command = "INSERT INTO ABO816.CUSTOMER(" + customerID + "," + firstName +
-//				"," + familyName + ")" + "VALUES(" + entryDate + ")";
-//		deleteTable();
-//		createTable();
 		String command = "INSERT INTO ABO816.CUSTOMER (CUSTOMERID,FIRSTNAME,FAMILYNAME,ENTRYDATE)" 
 							+  "VALUES (?,?,?,?)";
 		
@@ -35,14 +26,15 @@ public class CustomerDAOImpl implements CustomerDAO {
 			stm.setDate(4, Date.valueOf(customer.getEntryDate()));
 			stm.executeUpdate();
 			stm.close();
+			System.out.println("Customer was added succesfully!");
 		} catch (SQLException e) {
 			System.err.println("Could not add Customer!");
 		}
-		System.out.println("Customer was added succesfully!");
 			
 	}
 
 	public void insertCustomerList(List<Customer> list) {
+		int count = 0;
 		String command = "INSERT INTO ABO816.CUSTOMER (CUSTOMERID,FIRSTNAME,FAMILYNAME,ENTRYDATE)" +  "VALUES (?,?,?,?)";
 		try(PreparedStatement stm = con.prepareStatement(command);){
 
@@ -54,15 +46,15 @@ public class CustomerDAOImpl implements CustomerDAO {
 				
 				stm.addBatch();
 				count++;
-				if(count%100 == 0 || count == list.size()) {
+				if(count == list.size()) {
 					stm.executeBatch();
 				}
+				System.out.println("All Customers have been succesfully added to the table!");
 //				con.close();
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
-		System.out.println("All Customers have been succesfully added to the table!");
 	}
 
 	public void deleteCustomer(long id) {
@@ -72,10 +64,10 @@ public class CustomerDAOImpl implements CustomerDAO {
 			stm.setLong(1, id);
 			stm.executeUpdate();
 			stm.close();
+			System.out.println("Customer has been succesfully removed from the table!");
 		} catch (Exception e) {
 			e.printStackTrace();
 		} 
-		System.out.println("Customer has been succesfully removed from the table!");
 	}
 
 	public void updateCustomer(long id, String firstName, String familyName, LocalDate entryDate) {
@@ -88,6 +80,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 			stm.setLong(4, id);
 			stm.executeUpdate();
 			System.out.println("Database updated succesfully");
+		
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} 
@@ -112,17 +105,11 @@ public class CustomerDAOImpl implements CustomerDAO {
 			}
 			result.close();
 			stm.close();
-//			if(con != null) {
-//				con.close();
-//			}
 		} catch (SQLException e) {
 			System.err.println("Error retrieving Customer Data" + e.getMessage());
 		}		
 	}
 
-//	public int getCount() {
-//		return count;
-//	}
 	
 	public String showCustomerByID(long id) {
 		String customerName = null;
@@ -134,9 +121,6 @@ public class CustomerDAOImpl implements CustomerDAO {
 //			long customerID = id;
 			String first = result.getString(2);
 			String last = result.getString(3);
-//			Date entryDate = result.getDate(4);
-//			System.out.println("Customer:" + customerID + " | " + first + " | " 
-//					+ last + " | " + entryDate);
 			customerName = first + " " + last;
 			result.close();
 			stm.close();
